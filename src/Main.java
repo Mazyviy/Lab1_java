@@ -15,8 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         List<Pupil> pupil = new ArrayList<>();
-        pupil.add(new Student("Smirnov",1,1));
-        pupil.add(new Schoolboy("Golyachenkov",1,1));
+        pupil.add(new Student("Smirnov", new String[]{"Mat"}, new int[][]{{4}}));
+        pupil.add(new Schoolboy("Golyachenkov", new int[][]{{4}}, new String[]{"Mat"}));
 
        /* var st = new Schoolboy("Smirnov", 1, 1);*/
         Scanner in = new Scanner(System.in);

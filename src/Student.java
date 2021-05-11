@@ -1,15 +1,14 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Student implements Pupil {
     private String Falename;
-    private int[] Marks;
+    private int[][] Marks;
     private String[] Subjects;
 
-    Student(String f, int m, int s) {
+    Student(String f, String[] m, int[][] s) {
         this.Falename = f;
-        this.Marks = new int[m];
-        this.Subjects = new String[s];
+        this.Marks = s;
+        this.Subjects = m;
     }
 
     public void FalenameOut() {
@@ -22,29 +21,37 @@ public class Student implements Pupil {
         this.Falename = in.next();
     }
 
-    public void MarksMod() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Ввод [num] elements modification: ");
-        int num = in.nextInt();
-        System.out.println("Ввод element modification: ");
-        int elem = in.nextInt();
-
-        for(int i = 0; i < this.Marks.length; ++i) {
-            if (i == num - 1) {
-                this.Marks[i] = elem;
+    public void MarksMod(){
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("Ввод [num] elements modification: ");
+            int num = in.nextInt();
+            int bez=0;
+            for (int i=0;i<this.Marks[num].length;++i){
+                if (this.Marks[num][i]!=0){
+                    bez++;
+                }
             }
+            System.out.println("Ввод element modification: ");
+            for (int i=0;i<bez;++i){
+                int elem = in.nextInt();
+                this.Marks[num][i] = elem;
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Выход за границы массива оценок, в массиве " +this.Marks.length +" элемент(ов)");
         }
     }
 
     public void MarksOut() {
-        int[] var1 = this.Marks;
-        int var2 = var1.length;
-
-        for(int var3 = 0; var3 < var2; ++var3) {
-            int i = var1[var3];
-            System.out.println(i);
+        int[][] var1 = this.Marks;
+        for (int i = 0; i < var1.length; i++) {
+            for (int j = 0; j < var1[i].length; j++) {
+                if(var1[i][j]!=0)
+                System.out.print(var1[i][j] + " ");
+            }
+            System.out.println();
         }
-
     }
 
     public void SubjectsMod() {
@@ -53,7 +60,6 @@ public class Student implements Pupil {
         int num = in.nextInt();
         System.out.println("Ввод element modification: ");
         String elem = in.next();
-
         for(int i = 0; i < this.Subjects.length; ++i) {
             if (i == num - 1) {
                 this.Subjects[i] = elem;
@@ -64,10 +70,8 @@ public class Student implements Pupil {
     public void SubjectsOut() {
         String[] var1 = this.Subjects;
         int var2 = var1.length;
-
-        for(int var3 = 0; var3 < var2; ++var3) {
-            String i = var1[var3];
-            System.out.println(i);
+        for(int i = 0; i < this.Subjects.length; ++i) {
+            System.out.println(var1[i]);
         }
     }
 
@@ -75,22 +79,22 @@ public class Student implements Pupil {
         Scanner in = new Scanner(System.in);
         System.out.print("Сколько добавить элементов? : ");
         int koll = in.nextInt();
-        int[] arrMarks = new int[koll];
+        int[][] arrMarks = new int[koll][20];
         String[] arrSubjects = new String[koll];
-        System.out.printf("%s %d %s", "Ввод", koll, "Оценок: \n");
-
-        int i;
-        for(i = 0; i < arrMarks.length; ++i) {
-            arrMarks[i] = in.nextInt();
-        }
-
         System.out.printf("%s %d %s", "Ввод", koll, "предметов: \n");
-
-        for(i = 0; i < arrSubjects.length; ++i) {
+        for(int i = 0; i < arrSubjects.length; ++i) {
             arrSubjects[i] = in.next();
         }
 
-        int[] new_arrMarks = new int[arrMarks.length + this.Marks.length];
+        System.out.printf("%s %d %s", "Ввод", koll, "Оценок: \n");
+        for(int i = 0; i < arrMarks.length; ++i) {
+            System.out.printf("%s %d %s", "Ввод оценок к ", i, "предмету: ");
+            int qwe= in.nextInt();
+            for(int j = 0; j < qwe; ++j) {
+                arrMarks[i][j] = in.nextInt();
+            }
+        }
+        int[][] new_arrMarks = new int[arrMarks.length + this.Marks.length][];
         System.arraycopy(arrMarks, 0, new_arrMarks, 0, arrMarks.length);
         System.arraycopy(this.Marks, 0, new_arrMarks, arrMarks.length, this.Marks.length);
         this.Marks = Arrays.copyOf(new_arrMarks, new_arrMarks.length);
@@ -101,9 +105,16 @@ public class Student implements Pupil {
     }
 
     public void ArrLength() {
-        System.out.print("Marks length: ");
-        System.out.println(this.Marks.length);
         System.out.print("Subjects length: ");
         System.out.println(this.Subjects.length);
+
+        for(int i = 0; i < Marks.length; ++i) {
+            System.out.print(" Marks length " + i + " : ");
+            int sum=0;
+            for (int j = 0; j < Marks[i].length; ++j) {
+                if(Marks[i][j]!=0){sum++;}
+            }
+                System.out.println(sum);
+        }
     }
 }
