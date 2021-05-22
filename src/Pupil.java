@@ -1,10 +1,17 @@
 interface Pupil {
     void FalenameOut();
+
     void FilenameMod();
-    void MarksMod();
-    void MarksOut();
-    void SubjectsMod();
-    void SubjectsOut();
+
+    void MarksMod() throws MarkOutOfBoundsException;
+
+    void SubjectsMod() throws DuplicateSubjectException;
+
+    void SubjectsAndMarksOut();
+
     void MarksSubjectsAdd();
+
     void ArrLength();
+
+    void MeanArithmeticMarks();
 }

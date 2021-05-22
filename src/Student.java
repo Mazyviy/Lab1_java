@@ -1,4 +1,19 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
+
+class MarkOutOfBoundsException extends Exception {
+    @Override
+    public String getMessage() {
+        return "Mark is out of bound!";
+    }
+}
+
+class DuplicateSubjectException extends Exception {
+    @Override
+    public String getMessage() {
+        return "Subject name has been already used!";
+    }
+}
 
 public class Student implements Pupil {
     private String Falename;
@@ -26,52 +41,56 @@ public class Student implements Pupil {
             Scanner in = new Scanner(System.in);
             System.out.println("Ввод [num] elements modification: ");
             int num = in.nextInt();
-            int bez=0;
-            for (int i=0;i<this.Marks[num].length;++i){
-                if (this.Marks[num][i]!=0){
+            int bez = 0;
+            if (num < Marks.length || num > Marks.length) {
+                throw (new MarkOutOfBoundsException());
+            }
+            for (int i = 0; i < this.Marks[num].length; ++i) {
+                if (this.Marks[num][i] != 0) {
                     bez++;
                 }
             }
             System.out.println("Ввод element modification: ");
-            for (int i=0;i<bez;++i){
+            for (int i = 0; i < bez; ++i) {
                 int elem = in.nextInt();
                 this.Marks[num][i] = elem;
             }
-        }
-        catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Выход за границы массива оценок, в массиве " +this.Marks.length +" элемент(ов)");
+        } catch (MarkOutOfBoundsException e) {
+            System.err.println(e.getMessage());
+            System.out.println("Выход за границы массива оценок, в массиве " + this.Marks.length + " элемент(ов)");
         }
     }
 
-    public void MarksOut() {
-        int[][] var1 = this.Marks;
-        for (int i = 0; i < var1.length; i++) {
-            for (int j = 0; j < var1[i].length; j++) {
-                if(var1[i][j]!=0)
-                System.out.print(var1[i][j] + " ");
+    public void SubjectsAndMarksOut() {
+        for (int i = 0; i < Subjects.length; ++i) {
+            System.out.print(Subjects[i] + ": ");
+            for (int j = 0; j < Marks[i].length; j++) {
+                if (Marks[i][j] != 0)
+                    System.out.print(Marks[i][j] + " ");
             }
             System.out.println();
         }
     }
 
     public void SubjectsMod() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Ввод [num] elements modification: ");
-        int num = in.nextInt();
-        System.out.println("Ввод element modification: ");
-        String elem = in.next();
-        for(int i = 0; i < this.Subjects.length; ++i) {
-            if (i == num - 1) {
-                this.Subjects[i] = elem;
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("Ввод [num] elements modification: ");
+            int num = in.nextInt();
+            System.out.println("Ввод element modification: ");
+            String elem = in.next();
+            for (String sub : Subjects) {
+                if (sub.equals(elem)) {
+                    throw (new DuplicateSubjectException());
+                }
             }
-        }
-    }
-
-    public void SubjectsOut() {
-        String[] var1 = this.Subjects;
-        int var2 = var1.length;
-        for(int i = 0; i < this.Subjects.length; ++i) {
-            System.out.println(var1[i]);
+            for (int i = 0; i < this.Subjects.length; ++i) {
+                if (i == num - 1) {
+                    this.Subjects[i] = elem;
+                }
+            }
+        } catch (DuplicateSubjectException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -85,7 +104,6 @@ public class Student implements Pupil {
         for(int i = 0; i < arrSubjects.length; ++i) {
             arrSubjects[i] = in.next();
         }
-
         System.out.printf("%s %d %s", "Ввод", koll, "Оценок: \n");
         for(int i = 0; i < arrMarks.length; ++i) {
             System.out.printf("%s %d %s", "Ввод оценок к ", i, "предмету: ");
@@ -101,20 +119,38 @@ public class Student implements Pupil {
         String[] new_arrSubjects = new String[arrSubjects.length + this.Subjects.length];
         System.arraycopy(arrSubjects, 0, new_arrSubjects, 0, arrSubjects.length);
         System.arraycopy(this.Subjects, 0, new_arrSubjects, arrSubjects.length, this.Subjects.length);
-        this.Subjects = (String[])Arrays.copyOf(new_arrSubjects, new_arrSubjects.length);
+        this.Subjects = Arrays.copyOf(new_arrSubjects, new_arrSubjects.length);
     }
 
     public void ArrLength() {
         System.out.print("Subjects length: ");
         System.out.println(this.Subjects.length);
-
-        for(int i = 0; i < Marks.length; ++i) {
+        for (int i = 0; i < Marks.length; ++i) {
             System.out.print(" Marks length " + i + " : ");
-            int sum=0;
+            int sum = 0;
             for (int j = 0; j < Marks[i].length; ++j) {
-                if(Marks[i][j]!=0){sum++;}
+                if (Marks[i][j] != 0) {
+                    sum++;
+                }
             }
-                System.out.println(sum);
+            System.out.println(sum);
+        }
+    }
+
+    public void MeanArithmeticMarks() {
+        double mean = 0.00;
+        int q = 0;
+        for (int i = 0; i < Marks.length; i++) {
+            for (int j = 0; j < Marks[i].length; j++) {
+                if (Marks[i][j] != 0) {
+                    q++;
+                    mean += Marks[i][j];
+                }
+            }
+            mean /= q;
+            System.out.println("Mean of marks: " + mean);
+            mean = 0.00;
+            q = 0;
         }
     }
 }
