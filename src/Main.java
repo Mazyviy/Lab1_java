@@ -8,14 +8,13 @@ public class Main {
         System.out.println("Выбор класса");
         Scanner in1 = new Scanner(System.in);
         flag = in1.nextInt();
-        flag --;
         return flag;
     }
 
     public static void main(String[] args) throws MarkOutOfBoundsException, DuplicateSubjectException {
         List<Pupil> pupil = new ArrayList<>();
         pupil.add(new Student("Smirnov", new String[]{"Mat"}, new int[][]{{4}}));
-        pupil.add(new Schoolboy("Golyachenkov", new String[]{"Mat"}, new int[][]{{4}}));
+        pupil.add(new Schoolboy("Golyachenkov", new String[]{"Program"}, new int[][]{{5}}));
         Scanner in = new Scanner(System.in);
         String s = "";
 
